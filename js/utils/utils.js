@@ -1,4 +1,4 @@
-var getUtils = function (context) {
+var getUtils = function (context, width, height) {
 
     /**
      * Draw the arrow to stage
@@ -65,7 +65,9 @@ var getUtils = function (context) {
         context.fillRect(x, y, width, height);
     }
 
-
+    function clearRect () {
+        context.clearRect(0, 0, width, height);
+    }
 
     function lerp (min, max, norm) {
         return (max - min) * norm + min;
@@ -100,12 +102,12 @@ var getUtils = function (context) {
         lerp: lerp,
         map: map,
         clamp: clamp,
+        clearRect: clearRect,
         degreesToRads: function (deg) {
             return deg/180*Math.PI;
         },
         radsToDegrees: function (rad) {
             return rad/180*Math.PI;
-        },
-
+        }
     }
 };
