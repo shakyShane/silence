@@ -35,7 +35,7 @@ window.onload = function () {
         radius = pulse;
 
         /**
-         * Oscillate the item within 200 px either side of center
+         * Oscillate the item within 100px either side of center
          * @type {number}
          */
         var startX = centerX + Math.sin(centerOffset) * 100;

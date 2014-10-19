@@ -73,6 +73,10 @@ window.onload = function () {
          */
         utils.drawRect(width/2-newBarWidth/2, 0, newBarWidth, height, barColor);
 
+
+        /**
+         *
+         */
         utils.drawRect(width/2-newBarWidth/2, 0, newBarWidth, height, barColor);
 
         /**
