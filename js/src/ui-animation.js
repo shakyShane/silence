@@ -1,29 +1,67 @@
-window.onload = function () {
-    var canvas = document.getElementById("canvas");
-    var context = canvas.getContext("2d");
-    var width = canvas.width = window.innerWidth;
-    var height = canvas.height = window.innerHeight;
-    var utils = getUtils(context, width, height);
+(function () {
+    
+    var Loader = function (elem) {
+        this.elem = elem;
+        this.context = elem.getContext("2d");
+        this.width = this.elem.width;
+        this.height = this.elem.height;
+        this.utils = getUtils(this.context, this.width, this.height);
 
-    var centerX = width/2;
-    var centerY = height/2;
+        this.centerX = this.width / 2;
+        this.centerY = this.height / 2;
 
-    var radius      = 30;
-    var borderWidth = 6;
-    
-    //utils.drawCircle(centerX, centerY, 100, utils.degreesToRads(180), utils.degreesToRads(350));
-    //utils.drawCircle(centerX, centerY, 80, null, null, "white");
-    
-    var norm = 0;
-    
-    render();
-    
-    function render () {
+        this.radius = 15;
+        this.innerSquare = this.radius / 2;
+        this.borderWidth = 4;
+        this.startAngle = 0;
+        this.loading = false;
+        this.loaded = false;
+        this.progress = 0;
+    };
+
+    /**
+     * Draw the first scene
+     */
+    Loader.prototype.start = function () {
+        this.loading = true;
+        render(this, this.startAngle);
+    }
+
+    /**
+     * @param norm - value between 0 - 1 representing current progress
+     */
+    Loader.prototype.update = function (norm) {
+
+        this.progress = norm;
+
+        if (this.progress > 1.01) {
+            this.loaded = true;
+            this.loading = false;
+            return this;
+        } else {
+            if (this.loading && !this.loaded) {
+                render(this, norm);
+            }
+        }
+    }
+
+    function render(obj, norm) {
+
+        var context = obj.context;
+        var width = obj.width;
+        var height = obj.height;
+        var centerX = obj.centerX;
+        var centerY = obj.centerY;
+        var radius = obj.radius;
+        var utils = obj.utils;
+
+        var innerSquare = obj.innerSquare;
+        var borderWidth = obj.borderWidth;
 
         /**
          * Clear the screen
          */
-        context.clearRect(0, 0, width, height);
+        context.clearRect(0, 0, 50, 50);
 
         // Outer line
         context.beginPath();
@@ -33,11 +71,12 @@ window.onload = function () {
         // Outer line color
         context.strokeStyle = 'blue';
         context.stroke();
-        
-        var startingAngle = utils.degreesToRads(0);
-        var arcSize       = utils.degreesToRads(norm);
-        var endingAngle   = startingAngle + arcSize;
-        
+
+        var lerped = utils.lerp(0, 360, norm);
+        var startingAngle = utils.degreesToRads(270);
+        var arcSize = utils.degreesToRads(lerped);
+        var endingAngle = startingAngle + arcSize;
+
         context.save();
         context.beginPath();
         context.moveTo(centerX, centerY);
@@ -46,22 +85,14 @@ window.onload = function () {
         context.fillStyle = "blue";
         context.fill();
         context.restore();
-        
-        utils.drawCircle(centerX, centerY, radius-borderWidth, 0, Math.PI * 2, "white");
-        utils.drawRect(centerX-6, centerY-6, 14, 14, "blue");
-    
-        if (norm <= 360) {
-            norm += 1;
-        } else {
-            
-        }
-        
-        requestAnimationFrame(render);
+
+        utils.drawCircle(centerX, centerY, radius - borderWidth, 0, Math.PI * 2, "white");
+        utils.drawRect(centerX - innerSquare / 2, centerY - innerSquare / 2, innerSquare, innerSquare, "blue");
     }
-    
-    
+
+
     //function convertToRadians(degree) {
-        //return degree*(Math.PI/180);
+    //return degree*(Math.PI/180);
     //}
     //
     //function incrementAngle() {
@@ -89,4 +120,6 @@ window.onload = function () {
     //}
     //
     //setInterval(drawRandomlyColoredRectangle, 20);
-};
+    
+    window.Loader = Loader;
+})();
