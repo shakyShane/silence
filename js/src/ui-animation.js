@@ -25,7 +25,7 @@
     Loader.prototype.start = function () {
         this.loading = true;
         render(this, this.startAngle);
-    }
+    };
 
     /**
      * @param norm - value between 0 - 1 representing current progress
@@ -48,8 +48,6 @@
     function render(obj, norm) {
 
         var context = obj.context;
-        var width = obj.width;
-        var height = obj.height;
         var centerX = obj.centerX;
         var centerY = obj.centerY;
         var radius = obj.radius;
@@ -89,37 +87,6 @@
         utils.drawCircle(centerX, centerY, radius - borderWidth, 0, Math.PI * 2, "white");
         utils.drawRect(centerX - innerSquare / 2, centerY - innerSquare / 2, innerSquare, innerSquare, "blue");
     }
-
-
-    //function convertToRadians(degree) {
-    //return degree*(Math.PI/180);
-    //}
-    //
-    //function incrementAngle() {
-    //    angle++;
-    //    if(angle > 360) {
-    //        angle = 0;
-    //    }
-    //}
-
-    //function drawRandomlyColoredRectangle() {
-    //    <!-- clear the drawing surface -->
-    //    context.clearRect(0,0,width,height);
-    //    <!-- you can also stroke a rect, the operations need to happen in order -->
-    //    incrementAngle();
-    //    context.save();
-    //    context.lineWidth = 10;
-    //    context.translate(200,200);
-    //    context.rotate(convertToRadians(angle));
-    //
-    //    <!-- set the fill style -->
-    //    context.fillStyle = '#'+Math.floor(Math.random()*16777215).toString(16);
-    //    context.fillRect(-25,-25,50,50);
-    //    context.strokeRect(-25,-25,50,50);
-    //    context.restore();
-    //}
-    //
-    //setInterval(drawRandomlyColoredRectangle, 20);
     
     window.Loader = Loader;
 })();
